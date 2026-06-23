@@ -8,8 +8,6 @@ export default defineConfig({
   description:
     'Playwright + TypeScript test automation framework for demo.nopcommerce.com — POM, data-driven, Cloudflare-ready, 34 tests across 9 features.',
   lang: 'en-US',
-  // Served from a GitHub Pages project site: https://siraajul.github.io/nopCom_Automation/
-  base: '/nopCom_Automation/',
   cleanUrls: true,
   lastUpdated: true,
 
