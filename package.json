@@ -9,6 +9,7 @@
     "test:ui": "playwright test --ui",
     "test:retry-failed": "playwright test --last-failed",
     "test:video": "VIDEO=on playwright test",
+    "test:slow": "SLOWMO=10000 VIDEO=on playwright test",
     "report": "playwright show-report",
     "report:pulse": "generate-pulse-report",
     "report:pulse:light": "generate-report",
