@@ -9,3 +9,7 @@ node_modules/
 /playwright/.auth/
 .playwright-mcp/
 .DS_Store
+
+# VitePress
+**/.vitepress/dist/
+**/.vitepress/cache/
