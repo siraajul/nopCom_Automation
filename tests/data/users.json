@@ -1,0 +1,31 @@
+{
+  "validRegistrations": [
+    { "gender": "male", "firstName": "Alice", "lastName": "Walker" },
+    { "gender": "female", "firstName": "Bob", "lastName": "Stone" }
+  ],
+  "invalidLogins": [
+    {
+      "case": "unknown email",
+      "email": "no.such.user.qa@example.com",
+      "password": "Whatever123",
+      "expectedError": "no customer account found"
+    },
+    {
+      "case": "empty email",
+      "email": "",
+      "password": "Whatever123",
+      "expectedError": "Please enter your email"
+    },
+    {
+      "case": "malformed email",
+      "email": "not-an-email",
+      "password": "Whatever123",
+      "expectedError": "Please enter a valid email address"
+    }
+  ],
+  "newsletterEmails": {
+    "valid": "subscriber.qa@example.com",
+    "invalid": "plainaddress",
+    "empty": ""
+  }
+}

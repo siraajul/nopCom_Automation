@@ -1,0 +1,13 @@
+{
+  "valid": [
+    { "term": "laptop", "expectContains": "laptop" },
+    { "term": "phone", "expectContains": "phone" },
+    { "term": "book", "expectContains": "book" }
+  ],
+  "noResults": "zxqwvbnmasdf123",
+  "tooShort": "ab",
+  "products": {
+    "simple": "htc-smartphone",
+    "simpleName": "HTC smartphone"
+  }
+}
