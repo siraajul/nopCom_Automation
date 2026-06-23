@@ -38,7 +38,8 @@ async function addToCartAndPlaceOrder(
   const product = new ProductPage(page);
   await product.open(search.products.simple);
   await product.addToCart();
-  await product.barNotificationText();
+  // Stable confirmation (toast auto-fades and is racy under slow-mo).
+  await expect(product.cartQtyBadge).toContainText('(1)');
 
   const cart = new CartPage(page);
   await cart.open();
@@ -75,7 +76,9 @@ test.describe('E2E Checkout', () => {
     const product = new ProductPage(page);
     await product.waitForStoreReady(); // navigated via click → wait for handlers
     await product.addToCart();
-    await product.barNotificationText();
+    // Confirm via the persistent cart badge (the toast auto-fades, which is racy
+    // under slow-mo / recording); the badge is a stable oracle.
+    await expect(product.cartQtyBadge).toContainText('(1)');
 
     const cart = new CartPage(page);
     await cart.open();
@@ -151,7 +154,9 @@ test.describe('E2E Checkout', () => {
     const product = new ProductPage(page);
     await product.open(search.products.simple);
     await product.addToCart();
-    await product.barNotificationText();
+    // Confirm via the persistent cart badge (the toast auto-fades, which is racy
+    // under slow-mo / recording); the badge is a stable oracle.
+    await expect(product.cartQtyBadge).toContainText('(1)');
 
     const cart = new CartPage(page);
     await cart.open();
