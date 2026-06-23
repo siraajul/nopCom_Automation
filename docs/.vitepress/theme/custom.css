@@ -1,0 +1,95 @@
+/* ------------------------------------------------------------------ *
+ *  Custom theme tweaks for the nopCommerce automation docs.
+ *
+ *  Goals:
+ *   1. The wide Pass/Fail/Edge tables shouldn't be crushed on desktop.
+ *   2. Nothing should ever overflow the viewport (full responsiveness).
+ *
+ *  Strategy (deliberately NOT fighting VitePress's responsive layout):
+ *   - Tables are horizontal-scroll containers at every width, so a wide
+ *     table scrolls inside its box and never pushes the page sideways.
+ *   - Content is widened ONLY on large screens (>= 960px) via a media query,
+ *     where there is room; smaller screens keep the default responsive layout.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --vp-code-font-size: 0.85em;
+}
+
+/* ---- Tables: fill the column, but always scroll instead of overflowing ---- */
+.vp-doc table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.25rem 0;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.vp-doc th,
+.vp-doc td {
+  vertical-align: top;
+  line-height: 1.55;
+  padding: 9px 14px;
+}
+
+.vp-doc thead th {
+  background: var(--vp-c-bg-soft);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.vp-doc td {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Short ID / first column stays on one line (don't break "SRCH-P1"). */
+.vp-doc td:first-child {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.vp-doc tr:nth-child(2n) td {
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc td code,
+.vp-doc th code {
+  white-space: nowrap;
+  font-size: 0.82em;
+}
+
+.vp-doc h2 {
+  margin-top: 2.25rem;
+}
+
+/* ---- Desktop only: give the table-heavy pages a wider content column so the
+ * tables aren't crushed and the page doesn't feel left-heavy. Below 960px we
+ * leave VitePress's responsive layout completely untouched. ---- */
+@media (min-width: 960px) {
+  .page-wide .content-container {
+    max-width: 1040px;
+  }
+}
+
+/* ---- Small screens: keep cells on one line so the table scrolls (swipe)
+ * rather than squishing into unreadable stacks. ---- */
+@media (max-width: 768px) {
+  .vp-doc th,
+  .vp-doc td {
+    white-space: nowrap;
+  }
+
+  /* Single mobile menu: hide the top nav hamburger (all navigation is in the
+   * sidebar, reached via the "Menu" button) so there aren't two hamburgers.
+   * Keep the dark-mode toggle reachable inline in the top bar. */
+  .VPNavBarHamburger {
+    display: none !important;
+  }
+  .VPNavBarAppearance.appearance {
+    display: flex !important;
+  }
+}
