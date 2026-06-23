@@ -18,6 +18,13 @@ const PULSE_REPORT_DIR = path.resolve(__dirname, 'pulse-report');
  * - Evidence on failure: screenshot + trace + video are retained for every
  *   failed test. Set VIDEO=on to record a video of EVERY test (bonus task).
  */
+// SLOW / DEMO MODE — set SLOWMO=<ms> to pause before every browser action so the
+// run is easy to screen-record. e.g. `SLOWMO=10000 npm run test:slow` = ~10s per
+// step. In this mode we force ONE window and disable the per-test timeout (slow
+// steps would otherwise blow the timeout). 0 = off (normal speed).
+const SLOW_MO = Number(process.env.SLOWMO) || 0;
+const DEMO = SLOW_MO > 0;
+
 export default defineConfig({
   testDir: './tests',
 
@@ -27,18 +34,18 @@ export default defineConfig({
   // Fail the build on CI if test.only is accidentally left in the source.
   forbidOnly: !!process.env.CI,
 
-  // The site is a shared live demo; one retry absorbs transient network/Cloudflare flakiness.
-  retries: process.env.CI ? 2 : 1,
+  // The site is a shared live demo; one retry absorbs transient network/Cloudflare
+  // flakiness. No retries in demo mode (a clean single take for recording).
+  retries: DEMO ? 0 : process.env.CI ? 2 : 1,
 
   // Tests run HEADED (Cloudflare blocks headless on this site), so each worker
   // opens a visible Chrome window. Default to 2 to balance speed vs. number of
-  // windows; use `--workers=1` for a single window, or `--workers=4` for speed.
-  workers: process.env.CI ? 2 : 2,
+  // windows; demo mode forces 1 window for a clean recording.
+  workers: DEMO ? 1 : process.env.CI ? 2 : 2,
 
-  // Generous per-test timeout: a slow Cloudflare "security verification"
-  // challenge can take a while to clear before the test even begins.
-  timeout: 120_000,
-  expect: { timeout: 10_000 },
+  // Generous per-test timeout; disabled in demo mode so slow steps don't time out.
+  timeout: DEMO ? 0 : 120_000,
+  expect: { timeout: DEMO ? 0 : 10_000 },
 
   reporter: [
     ['list'],
@@ -74,6 +81,8 @@ export default defineConfig({
         headless: false,
         launchOptions: {
           args: ['--disable-blink-features=AutomationControlled'],
+          // Pause before each action in demo mode so the run is recordable.
+          slowMo: SLOW_MO,
         },
       },
     },
