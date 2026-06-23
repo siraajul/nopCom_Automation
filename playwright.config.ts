@@ -18,12 +18,17 @@ const PULSE_REPORT_DIR = path.resolve(__dirname, 'pulse-report');
  * - Evidence on failure: screenshot + trace + video are retained for every
  *   failed test. Set VIDEO=on to record a video of EVERY test (bonus task).
  */
-// SLOW / DEMO MODE — set SLOWMO=<ms> to pause before every browser action so the
-// run is easy to screen-record. e.g. `SLOWMO=10000 npm run test:slow` = ~10s per
-// step. In this mode we force ONE window and disable the per-test timeout (slow
-// steps would otherwise blow the timeout). 0 = off (normal speed).
+// SLOW / DEMO MODE for screen recording (0 = off, normal speed).
+//   STEP_DELAY=<ms>  -> pause this long AFTER each logical step (preferred:
+//                       even, predictable pacing — e.g. STEP_DELAY=10000 ≈ 10s
+//                       per visible step). Implemented in the page objects.
+//   SLOWMO=<ms>      -> Playwright slowMo: pause before EVERY micro-action
+//                       (kept as an option, but coarser/longer than STEP_DELAY).
+// In demo mode we force ONE window and disable the per-test timeout so the long
+// pauses don't trip it.
 const SLOW_MO = Number(process.env.SLOWMO) || 0;
-const DEMO = SLOW_MO > 0;
+const STEP_DELAY = Number(process.env.STEP_DELAY) || 0;
+const DEMO = SLOW_MO > 0 || STEP_DELAY > 0;
 
 export default defineConfig({
   testDir: './tests',
@@ -59,12 +64,21 @@ export default defineConfig({
     // Evidence captured on failure for debugging.
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
-    video: process.env.VIDEO === 'on' ? 'on' : 'retain-on-failure',
+    // In demo mode record at full viewport size (otherwise Playwright downscales
+    // video to ~800px); normal runs use the lightweight default.
+    video: DEMO
+      ? { mode: process.env.VIDEO === 'on' ? 'on' : 'retain-on-failure', size: { width: 1680, height: 1000 } }
+      : process.env.VIDEO === 'on'
+        ? 'on'
+        : 'retain-on-failure',
 
     actionTimeout: 15_000,
     navigationTimeout: 40_000,
 
-    viewport: { width: 1366, height: 900 },
+    // In demo/recording mode use a large viewport so the window fills the screen
+    // and the recorded video is high-resolution; otherwise a stable normal size.
+    // (On macOS, a fixed large viewport is more reliable than --start-maximized.)
+    viewport: DEMO ? { width: 1680, height: 1000 } : { width: 1366, height: 900 },
     ignoreHTTPSErrors: true,
   },
 
@@ -80,7 +94,11 @@ export default defineConfig({
         // it forces a Windows UA that Cloudflare rejects on this machine.
         headless: false,
         launchOptions: {
-          args: ['--disable-blink-features=AutomationControlled'],
+          args: [
+            '--disable-blink-features=AutomationControlled',
+            // Place the window at the top-left so the large viewport fills the screen.
+            ...(DEMO ? ['--window-position=0,0'] : []),
+          ],
           // Pause before each action in demo mode so the run is recordable.
           slowMo: SLOW_MO,
         },
