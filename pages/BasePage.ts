@@ -1,5 +1,9 @@
 import { Page, Locator, expect } from '@playwright/test';
 
+// Demo/recording pacing: pause this long (ms) AFTER each logical step so a screen
+// recording is easy to follow. 0 = off (normal speed). Set via STEP_DELAY env.
+const STEP_DELAY = Number(process.env.STEP_DELAY) || 0;
+
 /**
  * BasePage holds behaviour shared by every page object:
  *  - resilient navigation that survives the Cloudflare "Just a moment..." gate
@@ -96,6 +100,17 @@ export class BasePage {
         timeout: 15_000,
       })
       .catch(() => {});
+
+    await this.pause();
+  }
+
+  /**
+   * Demo/recording pacing helper: pause AFTER a logical step so a screen
+   * recording is easy to follow. No-op unless STEP_DELAY is set. Called at the
+   * end of navigation and the key user actions below.
+   */
+  async pause(): Promise<void> {
+    if (STEP_DELAY > 0) await this.page.waitForTimeout(STEP_DELAY);
   }
 
   // ---- Shared header actions ----
@@ -103,6 +118,8 @@ export class BasePage {
   async searchFor(term: string): Promise<void> {
     await this.searchInput.fill(term);
     await this.searchButton.click();
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.pause();
   }
 
   /**
@@ -170,6 +187,7 @@ export class BasePage {
       await this.newsletterButton.click();
       await expect(this.newsletterResult).toBeVisible({ timeout: 8_000 });
     }
+    await this.pause();
   }
 
   async newsletterMessage(): Promise<string> {

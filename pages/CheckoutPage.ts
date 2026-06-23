@@ -101,6 +101,7 @@ export class CheckoutPage extends BasePage {
     await this.billingAddress1.fill(d.address1);
     await this.billingZip.fill(d.zip);
     await this.billingPhone.fill(d.phone);
+    await this.pause(); // let the filled billing form be visible while recording
   }
 
   /** Select an <option> in a <select> by a (case-insensitive) substring of its text. */
@@ -152,6 +153,7 @@ export class CheckoutPage extends BasePage {
           await btn.scrollIntoViewIfNeeded();
           await btn.click();
           await this.waitForLoading();
+          await this.pause(); // pace each checkout step for recording
           clicked = true;
           break;
         }

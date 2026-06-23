@@ -35,10 +35,12 @@ export class ProductPage extends BasePage {
 
   async addToCart(): Promise<void> {
     await this.addToCartButton.first().click();
+    await this.pause();
   }
 
   async addToWishlist(): Promise<void> {
     await this.addToWishlistButton.first().click();
+    await this.pause();
   }
 
   async priceText(): Promise<string> {

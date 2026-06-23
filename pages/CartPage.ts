@@ -34,10 +34,14 @@ export class CartPage extends BasePage {
   async proceedToCheckout(): Promise<void> {
     await this.termsCheckbox.check();
     await this.checkoutButton.click();
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.pause();
   }
 
   async checkoutAsGuest(): Promise<void> {
     await this.checkoutAsGuestButton.click();
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.pause();
   }
 
   async open(): Promise<void> {
