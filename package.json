@@ -1,15 +1,34 @@
 {
   "name": "nopcom_automation",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright automation suite for the nopCommerce demo store (https://demo.nopcommerce.com)",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:retry-failed": "playwright test --last-failed",
+    "test:video": "VIDEO=on playwright test",
+    "report": "playwright show-report",
+    "report:pulse": "generate-pulse-report",
+    "report:pulse:light": "generate-report",
+    "codegen": "playwright codegen https://demo.nopcommerce.com"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "nopcommerce",
+    "qa",
+    "pom"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.61.0",
     "@types/node": "^26.0.0"
+  },
+  "dependencies": {
+    "@arghajit/playwright-pulse-report": "^0.3.5"
   }
 }
