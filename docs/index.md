@@ -3,54 +3,74 @@ layout: home
 
 hero:
   name: nopCommerce Automation
-  text: Playwright test framework
-  tagline: 9 features · 34 tests · Page Object Model · Cloudflare-ready · data-driven
+  text: A Playwright test framework
+  tagline: Nine features, 34 tests, Page Object Model, and a real fight with Cloudflare.
   image:
-    src: /pulse-dashboard.png
-    alt: Playwright Pulse dashboard — 34 passed
+    src: /nopcommerce-x-playwright.svg
+    alt: nopCommerce and Playwright
   actions:
     - theme: brand
       text: How to Run
       link: /guide/running
     - theme: alt
-      text: Step 1 — Features
-      link: /Step1-Identify-Key-Areas
+      text: Getting Past Cloudflare
+      link: /Cloudflare-Bypass
     - theme: alt
-      text: View on GitHub
+      text: GitHub
       link: https://github.com/siraajul/nopCom_Automation
 
 features:
   - icon: 🧱
     title: Page Object Model
-    details: Reusable page objects hold selectors + actions; specs read as intent, never raw selectors.
+    details: Selectors and actions live in page objects. The specs only say what to check, never how to find a button.
   - icon: 🎯
-    title: Pass / Fail / Edge
-    details: Every feature has positive, negative and boundary scenarios — several data-driven from JSON.
+    title: Pass, Fail, Edge
+    details: Every feature has a happy path, a negative case, and a boundary case. Several are data-driven from JSON.
   - icon: 🔁
-    title: 3 E2E checkout journeys
-    details: Full purchase flow as a guest, a logged-in user, and register-then-buy in one session.
+    title: Three checkout journeys
+    details: The full buy flow as a guest, as a logged-in user, and registering then buying in one session.
   - icon: 🛡️
-    title: Beats Cloudflare
-    details: Handles the headless block and Rocket Loader handler-gating that break naive suites.
+    title: Gets past Cloudflare
+    details: Handles the headless block and the Rocket Loader trick that makes clicks quietly do nothing.
   - icon: ⚡
-    title: Hybrid API setup
-    details: Accounts created via form POST (fast, stable); features verified through the UI.
+    title: API-assisted setup
+    details: Accounts are created by posting the form directly, then the feature is checked through the UI.
   - icon: 📊
-    title: Dual reporting
-    details: Built-in Playwright HTML report plus the Playwright Pulse dashboard with trends.
+    title: Two reports
+    details: The built-in Playwright HTML report, plus the Pulse dashboard with trends across runs.
 ---
 
-## What is this?
+## The short version
 
-A **test automation framework** built on **Playwright + TypeScript** for the
-[nopCommerce demo store](https://demo.nopcommerce.com/). It covers **9 features
-in 34 tests** with happy-path, negative and boundary coverage, and is engineered
-to run reliably against a live, Cloudflare-protected site.
+A Playwright and TypeScript test framework for the
+[nopCommerce demo store](https://demo.nopcommerce.com/). It covers nine features
+in 34 tests, checks the happy paths along with the ways things should break, and
+is built to hold up against a live site that Cloudflare actively guards.
 
-- **Framework layer** — page objects, fixtures, hybrid API setup, data layer (reusable, zero tests).
-- **Test suite** — feature specs + 3 end-to-end checkout journeys.
-- **Reporting** — Playwright HTML + Pulse dashboard, with screenshot/trace/video on failure.
+It's split into two layers on purpose: the framework (page objects, fixtures, the
+data layer) is reusable scaffolding with no tests in it, and the suite is the
+feature specs plus three end-to-end checkout journeys.
 
-➡️ Start with **[How to Run](/guide/running)**, or read the assignment
-deliverables: **[Step 1 — Feature Selection](/Step1-Identify-Key-Areas)** and
-**[Step 2 — Test Scenarios](/Step2-Test-Scenarios)**.
+## By the numbers
+
+| | |
+|---|---|
+| Features | 9 (8 core + an end-to-end checkout) |
+| Tests | 34 (Pass / Fail / Edge, several data-driven) |
+| Page objects | 9 (`BasePage` + one per feature) |
+| Reporting | Playwright HTML + Pulse (with trends) |
+| On failure | screenshot, trace, and video |
+| Proof | 34/34 even with `--retries=0` |
+
+## Read next
+
+**Guides**
+
+- [How to Run](/guide/running): install, run, and record the suite
+- [Getting Past Cloudflare](/Cloudflare-Bypass): the part actually worth reading
+
+**Assignment deliverables**
+
+- [Step 1: Feature Selection](/feature-selection): the 8 features and why each matters
+- [Step 2: Test Scenarios](/test-scenarios): the Pass / Fail / Edge tables
+- [Step 3: Script Automation](/script-automation): how the scripts meet the brief
