@@ -34,12 +34,18 @@ export class ProductPage extends BasePage {
   }
 
   async addToCart(): Promise<void> {
-    await this.addToCartButton.first().click();
+    const btn = this.addToCartButton.first();
+    await btn.evaluate((node) => node.scrollIntoView({ behavior: 'smooth', block: 'center' })).catch(() => {});
+    await this.page.waitForTimeout(500); // let the scroll finish
+    await btn.click();
     await this.pause();
   }
 
   async addToWishlist(): Promise<void> {
-    await this.addToWishlistButton.first().click();
+    const btn = this.addToWishlistButton.first();
+    await btn.evaluate((node) => node.scrollIntoView({ behavior: 'smooth', block: 'center' })).catch(() => {});
+    await this.page.waitForTimeout(500); // let the scroll finish
+    await btn.click();
     await this.pause();
   }
 

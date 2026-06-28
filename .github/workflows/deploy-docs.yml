@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
+        with:                                                                                                                       
           node-version: 20
       - uses: actions/configure-pages@v5
       - name: Install dependencies
@@ -34,7 +34,7 @@ jobs:
         run: npm run docs:build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: docs/.vitepress/dist                                                                                                                                                                                                                                                                                                                               =
 
   deploy:
     needs: build

@@ -46,12 +46,12 @@ async function addToCartAndPlaceOrder(
   expect(await cart.itemCount()).toBeGreaterThan(0);
 
   await cart.proceedToCheckout();
-  await page.waitForURL(/checkoutasguest|onepagecheckout/, { timeout: 30_000 });
+  await page.waitForURL(/checkoutasguest|onepagecheckout/, { timeout: 30_000, waitUntil: 'domcontentloaded' });
 
   // Guests get an interstitial; logged-in users go straight to checkout.
   if (page.url().includes('checkoutasguest')) {
     await cart.checkoutAsGuest();
-    await page.waitForURL(/onepagecheckout/, { timeout: 30_000 });
+    await page.waitForURL(/onepagecheckout/, { timeout: 30_000, waitUntil: 'domcontentloaded' });
   }
 
   const checkout = new CheckoutPage(page);
@@ -85,9 +85,9 @@ test.describe('E2E Checkout', () => {
     expect(await cart.itemCount()).toBeGreaterThan(0);
 
     await cart.proceedToCheckout();
-    await page.waitForURL(/checkoutasguest|onepagecheckout/, { timeout: 30_000 });
+    await page.waitForURL(/checkoutasguest|onepagecheckout/, { timeout: 30_000, waitUntil: 'domcontentloaded' });
     await cart.checkoutAsGuest();
-    await page.waitForURL(/onepagecheckout/, { timeout: 30_000 });
+    await page.waitForURL(/onepagecheckout/, { timeout: 30_000, waitUntil: 'domcontentloaded' });
 
     const checkout = new CheckoutPage(page);
     await checkout.fillBilling({

@@ -68,6 +68,9 @@ export class CheckoutPage extends BasePage {
   async fillBilling(d: BillingDetails): Promise<void> {
     // The billing form only renders these fields for a brand-new address.
     await expect(this.billingFirstName).toBeVisible();
+    // Smooth scroll so the recording centers on the form
+    await this.billingFirstName.evaluate((node) => node.scrollIntoView({ behavior: 'smooth', block: 'center' })).catch(() => {});
+    await this.page.waitForTimeout(500); // let the scroll finish
     await this.billingFirstName.fill(d.firstName);
     await this.billingLastName.fill(d.lastName);
     // Logged-in customers don't get an email field (it comes from the account).
@@ -150,7 +153,9 @@ export class CheckoutPage extends BasePage {
           (await btn.isVisible().catch(() => false)) &&
           (await btn.isEnabled().catch(() => false));
         if (ready) {
-          await btn.scrollIntoViewIfNeeded();
+          // Smooth scroll to the active button so the recording is easy to follow
+          await btn.evaluate((node) => node.scrollIntoView({ behavior: 'smooth', block: 'center' })).catch(() => {});
+          await this.page.waitForTimeout(500); // let the scroll finish
           await btn.click();
           await this.waitForLoading();
           await this.pause(); // pace each checkout step for recording
